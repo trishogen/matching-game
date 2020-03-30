@@ -1,0 +1,47 @@
+body {
+  font-family: 'Raleway', sans-serif;
+  font-style: normal;
+}
+
+header {
+  margin: auto;
+  text-align: center;
+}
+
+div.sign-in {
+  margin: auto;
+  text-align: center;
+  width: 50%;
+}
+
+h1 {
+  font-size: 70px;
+}
+
+button {
+  border: #fff;
+  font-family: 'Raleway', sans-serif;
+  color: #000;
+  text-transform: uppercase;
+  font-weight: bold;
+  background: #fff;
+  padding: 10px;
+  border-radius: 30px;
+  display: inline-block;
+  transition: all 0.4s ease 0s;
+}
+
+br.br-big {
+  display: block;
+  margin: 10px 0;
+  line-height:22px;
+  content: " ";
+}
+
+input {
+    border: 2px solid red;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+    padding: 10px;
+    border-radius: 30px;
+}

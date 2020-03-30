@@ -14,6 +14,14 @@ div.sign-in {
   width: 50%;
 }
 
+div.game {
+  margin: auto;
+  width: 70%;
+  height: 550px;
+  border: 3px solid green;
+  padding: 10px;
+}
+
 h1 {
   font-size: 70px;
 }
@@ -39,9 +47,9 @@ br.br-big {
 }
 
 input {
-    border: 2px solid red;
-    font-family: 'Raleway', sans-serif;
-    text-align: center;
-    padding: 10px;
-    border-radius: 30px;
+  border: 2px solid red;
+  font-family: 'Raleway', sans-serif;
+  text-align: center;
+  padding: 10px;
+  border-radius: 30px;
 }

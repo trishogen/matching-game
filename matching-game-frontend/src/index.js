@@ -74,10 +74,26 @@ function startNewGame(user_id){
       return response.json();
     })
     .then(function(object) {
-      console.log(object)
+      loadGame(object)
     })
     .catch(function(error) {
       alert("I'm having trouble starting a new game!");
       console.log(error.message);
     });
+}
+
+function loadGame(game){
+  hideSignIn()
+
+  let div = document.createElement('div');
+  div.className = 'game';
+
+  MAIN.append(div);
+
+  console.log(game)
+}
+
+function hideSignIn(){
+  let signInDiv = document.getElementsByClassName('sign-in')[0];
+  signInDiv.style.display = 'none';
 }

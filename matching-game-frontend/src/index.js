@@ -84,6 +84,7 @@ function startNewGame(user_id){
 
 function loadGame(game){
   hideSignIn()
+  showTimer()
 
   let div = document.createElement('div');
   div.className = 'game';
@@ -96,4 +97,17 @@ function loadGame(game){
 function hideSignIn(){
   let signInDiv = document.getElementsByClassName('sign-in')[0];
   signInDiv.style.display = 'none';
+}
+
+function showTimer(){
+  let div = document.createElement('div');
+  div.className = 'timer';
+  let i = 0;
+  window.setInterval(function(){div.innerText = formatTime(i++)}, 1000);
+
+  MAIN.append(div);
+}
+
+function formatTime(seconds){
+  return(seconds-(seconds%=60))/60+(9<seconds?':':':0')+seconds
 }

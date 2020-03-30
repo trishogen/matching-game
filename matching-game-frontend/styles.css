@@ -22,6 +22,10 @@ div.game {
   padding: 10px;
 }
 
+div.timer {
+  text-align: center;
+}
+
 h1 {
   font-size: 70px;
 }

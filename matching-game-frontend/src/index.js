@@ -1,5 +1,9 @@
 const MAIN = document.getElementsByTagName('main')[0];
 const BASE_URL = 'http://localhost:3000';
+const HEADERS = {
+  "Content-Type": "application/json",
+  "Accept": "application/json"
+}
 
 document.addEventListener("DOMContentLoaded", function(){
   loadSignInForm();
@@ -38,10 +42,7 @@ function signIn(e){
 
   let signInObj = {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    },
+    headers: HEADERS,
     body: JSON.stringify({
       "username": username
     })
@@ -52,10 +53,31 @@ function signIn(e){
       return response.json();
     })
     .then(function(object) {
+      startNewGame(object.id)
+    })
+    .catch(function(error) {
+      alert("I'm having trouble finding that user!");
+      console.log(error.message);
+    });
+}
+
+function startNewGame(user_id){
+  let userObj = {
+    method: "POST",
+    headers: HEADERS,
+    body: JSON.stringify({
+      "user_id": user_id
+    })
+  };
+  return fetch(BASE_URL + '/games', userObj)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(object) {
       console.log(object)
     })
     .catch(function(error) {
-      alert("I'm havign trouble finding that user!");
+      alert("I'm having trouble starting a new game!");
       console.log(error.message);
     });
 }

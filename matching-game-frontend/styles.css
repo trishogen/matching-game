@@ -18,7 +18,7 @@ div.game {
   margin: auto;
   width: 70%;
   height: 550px;
-  border: 3px solid green;
+  background-color: powderblue;
   padding: 10px;
 }
 

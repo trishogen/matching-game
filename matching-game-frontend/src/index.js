@@ -53,7 +53,7 @@ function signIn(e){
       return response.json();
     })
     .then(function(object) {
-      startNewGame(object.id)
+      return startNewGame(object.id)
     })
     .catch(function(error) {
       alert("I'm having trouble finding that user!");
@@ -74,7 +74,7 @@ function startNewGame(user_id){
       return response.json();
     })
     .then(function(object) {
-      loadGame(object)
+      return loadGame(object);
     })
     .catch(function(error) {
       alert("I'm having trouble starting a new game!");
@@ -91,7 +91,8 @@ function loadGame(game){
 
   MAIN.append(div);
 
-  console.log(game)
+  loadCards()
+
 }
 
 function hideSignIn(){
@@ -110,4 +111,24 @@ function showTimer(){
 
 function formatTime(seconds){
   return(seconds-(seconds%=60))/60+(9<seconds?':':':0')+seconds
+}
+
+function loadCards(){
+  let cards = getCards()
+  console.log(cards)
+}
+
+function getCards(){
+  let cardObj = {
+    method: "GET",
+    headers: HEADERS,
+  };
+  return fetch(BASE_URL + '/cards', cardObj)
+    .then(function(response) {
+      return response.json();
+    })
+    .catch(function(error) {
+      alert("I'm having trouble getting cards for the game!");
+      console.log(error.message);
+    });
 }

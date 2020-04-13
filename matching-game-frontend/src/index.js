@@ -4,6 +4,7 @@ const HEADERS = {
   "Content-Type": "application/json",
   "Accept": "application/json"
 }
+const IMG_DIR = "../matching-game-backend/app/assets/images"
 
 document.addEventListener("DOMContentLoaded", function(){
   loadSignInForm();
@@ -88,6 +89,7 @@ function loadGame(game){
 
   let div = document.createElement('div');
   div.className = 'game';
+  div.id = 'game';
 
   MAIN.append(div);
 
@@ -114,8 +116,7 @@ function formatTime(seconds){
 }
 
 function loadCards(){
-  let cards = getCards()
-  console.log(cards)
+  getCards().then(cards => cards.forEach(card => addCardToGame(card)));
 }
 
 function getCards(){
@@ -131,4 +132,18 @@ function getCards(){
       alert("I'm having trouble getting cards for the game!");
       console.log(error.message);
     });
+}
+
+function addCardToGame(card){
+  const game = document.getElementById('game')
+  let div = document.createElement('div');
+  div.className = 'card';
+
+  let img = document.createElement('img')
+  img.className = 'card-img';
+  img.src =  `${IMG_DIR}/${card.name}.png`;
+
+  div.append(img)
+  game.append(div)
+
 }

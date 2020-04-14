@@ -141,7 +141,7 @@ function addCardToGame(card){
 
   let img = document.createElement('img')
   img.className = 'card-img';
-  img.src =  `${IMG_DIR}/${card.name}.png`;
+  img.src = `${IMG_DIR}/${card.name}.png`;
 
   div.append(img)
   game.append(div)

@@ -20,6 +20,18 @@ div.game {
   height: 550px;
   background-color: powderblue;
   padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+div.card {
+  background-color: white;
+  border: 1px solid black;
+  min-width: 50%;
+  flex: 1 1 auto;
+  display: flex;
+  align-items:center;
+  justify-content:center;
 }
 
 div.timer {

@@ -4,6 +4,7 @@ class GamesController < ApplicationController
     user = User.find(params[:user_id])
     game = user.games.new
     game.save
+    game.add_cards_to_game()
 
     render json: GameSerializer.new(game).to_serialized_json
   end

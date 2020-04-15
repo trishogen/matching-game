@@ -7,7 +7,8 @@ class Game < ApplicationRecord
     cards = Card.all
 
     cards.each do |card|
-      self.game_cards.create(game_id: self.id, card_id: card.id)
+      # need to create each card twice as a game card
+      2.times {self.game_cards.create(game_id: self.id, card_id: card.id)}
     end
   end
 

@@ -27,7 +27,7 @@ div.game {
 div.card {
   background-color: white;
   border: 1px solid black;
-  min-width: 50%;
+  min-width: 49%;
   flex: 1 1 auto;
   display: flex;
   align-items:center;

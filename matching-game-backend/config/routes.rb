@@ -6,6 +6,6 @@ Rails.application.routes.draw do
     resources :game_cards, only: [:index]
   end
 
-  resources :cards, only: [:index]
+  resources :cards, only: [:show]
 
 end

@@ -93,7 +93,7 @@ function loadGame(game){
 
   MAIN.append(div);
 
-  loadCards()
+  loadCards(game.id)
 
 }
 
@@ -115,16 +115,19 @@ function formatTime(seconds){
   return(seconds-(seconds%=60))/60+(9<seconds?':':':0')+seconds
 }
 
-function loadCards(){
-  getCards().then(cards => cards.forEach(card => addCardToGame(card)));
+function loadCards(game_id){
+  getGameCards(game_id).then(cards => cards.forEach(card => addCardToGame(card)));
 }
 
-function getCards(){
-  let cardObj = {
+function getGameCards(game_id){
+  let gameCardObj = {
     method: "GET",
     headers: HEADERS,
   };
-  return fetch(BASE_URL + '/cards', cardObj)
+
+  let game_card_url = `${BASE_URL}/games/${game_id}/game_cards`
+
+  return fetch(game_card_url, gameCardObj)
     .then(function(response) {
       return response.json();
     })
@@ -134,16 +137,40 @@ function getCards(){
     });
 }
 
-function addCardToGame(card){
-  const game = document.getElementById('game')
-  let div = document.createElement('div');
-  div.className = 'card';
+function addCardToGame(gameCard){
+  getCard(gameCard.card_id)
+  .then(function(object){
+    addCardImage(object)
+  })
+}
 
-  let img = document.createElement('img')
+function getCard(card_id){
+  let cardObj = {
+    method: "GET",
+    headers: HEADERS,
+  };
+
+  let card_url = `${BASE_URL}/cards/${card_id}`
+
+  return fetch(card_url, cardObj)
+    .then(function(response) {
+      return response.json();
+    })
+    .catch(function(error) {
+      alert("I'm having trouble getting a specific card!");
+      console.log(error.message);
+    });
+}
+
+function addCardImage(card){
+  const game = document.getElementById('game')
+
+  let div = document.createElement('div');
+  div.className = 'card not-visable'; //set this from gameCard
+
+  let img = document.createElement('img');
   img.className = 'card-img';
   img.src = `${IMG_DIR}/${card.name}.png`;
-
   div.append(img)
   game.append(div)
-
 }

@@ -79,39 +79,5 @@ function getGameCards(game_id){
 }
 
 function addCardToGame(gameCard){
-  getCard(gameCard.card_id)
-  .then(function(object){
-    addCardImage(object)
-  })
-}
-
-function getCard(card_id){
-  let cardObj = {
-    method: "GET",
-    headers: HEADERS,
-  };
-
-  let card_url = `${BASE_URL}/cards/${card_id}`
-
-  return fetch(card_url, cardObj)
-    .then(function(response) {
-      return response.json();
-    })
-    .catch(function(error) {
-      alert("I'm having trouble getting a specific card!");
-      console.log(error.message);
-    });
-}
-
-function addCardImage(card){
-  const game = document.getElementById('game')
-
-  let div = document.createElement('div');
-  div.className = 'card not-visable'; //set this from gameCard
-
-  let img = document.createElement('img');
-  img.className = 'card-img';
-  img.src = `${IMG_DIR}/${card.name}.png`;
-  div.append(img)
-  game.append(div)
+  new Card(gameCard.card_id)
 }

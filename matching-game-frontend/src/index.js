@@ -79,5 +79,5 @@ function getGameCards(game_id){
 }
 
 function addCardToGame(gameCard){
-  new Card(gameCard.card_id)
+  new Card(gameCard.card_id, gameCard.id)
 }

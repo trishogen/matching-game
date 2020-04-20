@@ -16,15 +16,10 @@ ActiveRecord::Schema.define(version: 2020_03_31_165909) do
   enable_extension "plpgsql"
 
   create_table "cards", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "game_cards", force: :cascade do |t|
     t.integer "game_id"
-    t.integer "card_id"
-    t.boolean "card_visable", default: false
+    t.integer "image_id"
+    t.boolean "visable", default: false
+    t.boolean "matched", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -32,6 +27,12 @@ ActiveRecord::Schema.define(version: 2020_03_31_165909) do
   create_table "games", force: :cascade do |t|
     t.integer "user_id"
     t.integer "completion_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "images", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

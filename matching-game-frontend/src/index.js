@@ -57,18 +57,18 @@ function addTimer(){
 
 
 function loadCards(game_id){
-  getGameCards(game_id).then(cards => cards.forEach(card => addCardToGame(card)));
+  getCards(game_id).then(cards => cards.forEach(card => addCardToGame(card)));
 }
 
-function getGameCards(game_id){
-  let gameCardObj = {
+function getCards(game_id){
+  let gameCardsObj = {
     method: "GET",
     headers: HEADERS,
   };
 
-  let game_card_url = `${BASE_URL}/games/${game_id}/game_cards`
+  let game_cards_url = `${BASE_URL}/games/${game_id}/cards`
 
-  return fetch(game_card_url, gameCardObj)
+  return fetch(game_cards_url, gameCardsObj)
     .then(function(response) {
       return response.json();
     })
@@ -78,6 +78,6 @@ function getGameCards(game_id){
     });
 }
 
-function addCardToGame(gameCard){
-  new Card(gameCard.card_id, gameCard.id)
+function addCardToGame(card){
+  new Card(card.id, card.image_id)
 }

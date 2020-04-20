@@ -3,41 +3,42 @@ const VISIBILITY = {'visible': 'hidden',
 
 class Card {
 
-  constructor(cardId, gameCardId) {
-    this.id = cardId;
-    this.gameCardId = gameCardId,
-    this.name = undefined;
+  constructor(id, imgId) {
+    this.id = id;
+    this.imgId = imgId;
+    this.imgName = undefined;
     this.visibility = 'hidden'; // all cards start out hidden
+    this.matched = false; // all cards start out unmatched
 
-    this.getCard()
+    this.getImage()
     .then(function(object){
       this.render()}.bind(this)
     )
   }
 
-  getCard() {
-    let cardObj = {
+  getImage() {
+    let imgObj = {
       method: "GET",
       headers: HEADERS,
     };
 
-    let cardUrl = `${BASE_URL}/cards/${this.id}`
+    let imgUrl = `${BASE_URL}/images/${this.imgId}`
 
-    return fetch(cardUrl, cardObj)
+    return fetch(imgUrl, imgObj)
       .then(function(response) {
         return response.json();
       })
       .then(function(object) {
-        return this.setName(object);
+        return this.setImgName(object);
       }.bind(this))
       .catch(function(error) {
-        alert("I'm having trouble getting a specific card!");
+        alert("I'm having trouble getting a specific image!");
         console.log(error.message);
       });
   }
 
-  setName(card) {
-    this.name = card.name;
+  setImgName(img) {
+    this.imgName = img.name;
   }
 
   render() {
@@ -45,11 +46,11 @@ class Card {
 
     let div = document.createElement('div');
     div.className = `card ${this.visibility}`;
-    div.setAttribute('game-card-id', this.gameCardId)
+    div.setAttribute('card-id', this.id)
 
     let img = document.createElement('img');
     img.className = 'card-img';
-    img.src = `${IMG_DIR}/${this.name}.png`;
+    img.src = `${IMG_DIR}/${this.imgName}.png`;
     img.style.visibility = this.visibility
 
     div.addEventListener('click', function(e) {
@@ -61,9 +62,13 @@ class Card {
   }
 
   flipCard(e) {
+    if (this.matched === true){
+      // should no longer be able to be flipped if it has been matched
+      return
+    }
     // make sure to get div even if user click on image
     let divTarget = e.target.closest('div')
-    let gameCardId = divTarget.getAttribute('game-card-id')
+    let cardId = divTarget.getAttribute('card-id')
 
     // start at position 5 after the word card
     let curVisibility = divTarget.className.slice(5)
@@ -74,4 +79,6 @@ class Card {
     divTarget.classList.add(newVisibility)
     this.visibility = newVisibility
   }
+
+
 }

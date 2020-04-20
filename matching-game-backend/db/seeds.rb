@@ -1,10 +1,10 @@
-cards = [
+images = [
   {name: "bear"},
   {name: "corgi"},
   {name: "fish"},
   {name: "hornet"}
   ]
 
-cards.each do |card|
-  Card.create(card)
+images.each do |image|
+  Image.create(image)
 end

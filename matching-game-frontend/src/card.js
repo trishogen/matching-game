@@ -28,6 +28,10 @@ class Card {
     this._matched ? 'matched' : 'unmatched'
   }
 
+  set matched(matched) {
+    this._matched = (matched === 'matched') ? true : false;
+  }
+
   getImage() {
     let imgObj = {
       method: "GET",

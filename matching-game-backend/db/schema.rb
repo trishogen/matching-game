@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2020_03_31_165909) do
   create_table "cards", force: :cascade do |t|
     t.integer "game_id"
     t.integer "image_id"
-    t.boolean "visable", default: false
+    t.boolean "visible", default: false
     t.boolean "matched", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

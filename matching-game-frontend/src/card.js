@@ -7,13 +7,25 @@ class Card {
     this.id = id;
     this.imgId = imgId;
     this.imgName = undefined;
-    this.visibility = 'hidden'; // all cards start out hidden
-    this.matched = false; // all cards start out unmatched
+    this._visibile = false; // all cards start out hidden
+    this._matched = false; // all cards start out unmatched
 
     this.getImage()
     .then(function(object){
       this.render()}.bind(this)
     )
+  }
+
+  get visibility() {
+    return (this._visibile === true) ? 'visibile' : 'hidden'
+  }
+
+  set visibility(visibility) {
+    this._visible = (visibility === 'visible') ? true : false;
+  }
+
+  get matched() {
+    this._matched ? 'matched' : 'unmatched'
   }
 
   getImage() {
@@ -54,7 +66,7 @@ class Card {
     img.style.visibility = this.visibility
 
     div.addEventListener('click', function(e) {
-      this.flipCard(e);
+      this.flipCard(e)
     }.bind(this));
 
     div.append(img)
@@ -62,7 +74,7 @@ class Card {
   }
 
   flipCard(e) {
-    if (this.matched === true){
+    if (this.matched === 'matched'){
       // should no longer be able to be flipped if it has been matched
       return
     }
@@ -78,7 +90,28 @@ class Card {
     divTarget.classList.remove(curVisibility)
     divTarget.classList.add(newVisibility)
     this.visibility = newVisibility
+    this.update()
   }
 
+  update(){
+    let cardObj = {
+      method: "PATCH",
+      headers: HEADERS,
+      body: JSON.stringify({
+        visible: this._visible,
+        matched: this._matched
+      })
+    };
+    let cardUrl = `${BASE_URL}/cards/${this.id}`
+
+    return fetch(cardUrl, cardObj)
+      .then(function(response) {
+        return response.json();
+      })
+      .catch(function(error) {
+        alert("I'm having trouble updating this card!");
+        console.log(error.message);
+      });
+  }
 
 }

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :cards, only: [:index]
   end
 
+  resources :cards, only: [:update]
   resources :images, only: [:show]
 
 end

@@ -3,6 +3,7 @@ class Game {
     this.user_id = user_id
 
     this.startNewGame()
+    .then(new Timer(MAIN))
   }
 
   startNewGame(){
@@ -28,7 +29,6 @@ class Game {
 
   loadGame(game){
     signInForm.hide()
-    addTimer()
 
     let div = document.createElement('div');
     div.className = 'game';

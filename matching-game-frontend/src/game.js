@@ -1,6 +1,7 @@
 class Game {
   constructor(user_id) {
     this.user_id = user_id
+    this.cards = []
 
     this.startNewGame()
     .then(new Timer(MAIN))
@@ -41,7 +42,12 @@ class Game {
   }
 
   loadCards(game_id){
-    this.getCards(game_id).then(cards => cards.forEach(card => this.addCardToGame(card)));
+    this.getCards(game_id)
+    .then(function(cards){
+      this.shuffleCards(cards)
+      cards.forEach(card => this.addCardToGame(card))
+    }.bind(this)
+    )
   }
 
   getCards(game_id){
@@ -62,7 +68,53 @@ class Game {
       });
   }
 
-  addCardToGame(card){
-    new Card(card.id, card.image_id)
+  addCardToGame(card_obj){
+    let card = new Card(card_obj.id, card_obj.image_id,
+      this.checkForMatches.bind(this))
+    card.putCardInUI()
+    this.cards.push(card)
+  }
+
+  checkForMatches(){
+    let visibleCards = this.unmatchedCards('visible');
+    let hiddenCards = this.unmatchedCards('hidden')
+    let unmatchedCards = visibleCards.concat(hiddenCards)
+
+    unmatchedCards.forEach(card => card.disable());
+
+    if (visibleCards.length > 1) {
+      // check if 2 cards are a match
+      if (visibleCards[0].imgId === visibleCards[1].imgId){
+        // mark matched if they are, but keep disbaled
+        visibleCards.forEach(card => {
+          card.matched = 'matched'
+          card.update()
+        })
+      } else {
+        // if they are not matched enable them and hide them
+        setTimeout(() => {
+          visibleCards.forEach((card) => {
+            card.hide()
+          })
+          //enable rest of cards
+          unmatchedCards.forEach(card => card.enable());
+        }, 500);
+        return
+      }
+    } else {
+      console.log('less than 2 cards')
+    }
+
+    hiddenCards.forEach(card => card.enable());
+  }
+
+  unmatchedCards(visibility){
+    return this.cards.filter(card => card.visibility === visibility &&
+    card.matched === 'unmatched');
+  }
+
+  shuffleCards(cards) {
+    console.log('shuffling')
+    cards.sort(() => Math.random() - 0.5);
   }
 }

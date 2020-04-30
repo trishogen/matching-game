@@ -4,7 +4,7 @@ class Game {
 
     this.id = null;
     this.cards = []
-    this.timer = null;
+    this.timer = new Timer(MAIN)
     this.completion_time = null;
   }
 
@@ -22,7 +22,7 @@ class Game {
       })
       .then(function(object) {
         this.id = object.id
-        this.timer = new Timer(MAIN)
+        this.timer.start()
         this.loadGame(object);
       }.bind(this))
       .catch(function(error) {
@@ -109,10 +109,8 @@ class Game {
     }
 
     if (this.isGameWon()){
-      console.log('won')
-      this.completion_time = this.timer.secondsPast();
+      this.completion_time = this.timer.stop()
       this.update();
-      // hide game
       // congratulate user in UI
     } else {
     hiddenCards.forEach(card => card.enable());

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   post '/login', to: 'sessions#create'
 
-  resources :games, only: [:create] do
+  resources :games, only: [:create, :update] do
     resources :cards, only: [:index]
   end
 

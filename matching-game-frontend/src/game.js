@@ -1,10 +1,11 @@
 class Game {
   constructor(user_id) {
     this.user_id = user_id
-    this.cards = []
 
-    this.startNewGame()
-    .then(new Timer(MAIN))
+    this.id = null;
+    this.cards = []
+    this.timer = null;
+    this.completion_time = null;
   }
 
   startNewGame(){
@@ -20,7 +21,9 @@ class Game {
         return response.json();
       })
       .then(function(object) {
-        return this.loadGame(object);
+        this.id = object.id
+        this.timer = new Timer(MAIN)
+        this.loadGame(object);
       }.bind(this))
       .catch(function(error) {
         alert("I'm having trouble starting a new game!");
@@ -105,7 +108,15 @@ class Game {
       console.log('less than 2 cards')
     }
 
+    if (this.isGameWon()){
+      console.log('won')
+      this.completion_time = this.timer.secondsPast();
+      this.update();
+      // hide game
+      // congratulate user in UI
+    } else {
     hiddenCards.forEach(card => card.enable());
+    }
   }
 
   unmatchedCards(visibility){
@@ -114,7 +125,31 @@ class Game {
   }
 
   shuffleCards(cards) {
-    console.log('shuffling')
     cards.sort(() => Math.random() - 0.5);
+  }
+
+  isGameWon() {
+    let unmatchedCads = this.cards.filter(card => card.matched === 'unmatched');
+    return unmatchedCads.length == 0;
+  }
+
+  update(){
+    let gameObj = {
+      method: "PATCH",
+      headers: HEADERS,
+      body: JSON.stringify({
+        completion_time: this.completion_time
+      })
+    };
+    let gameUrl = `${BASE_URL}/games/${this.id}`
+
+    return fetch(gameUrl, gameObj)
+      .then(function(response) {
+        return response.json();
+      })
+      .catch(function(error) {
+        alert("I'm having trouble updating this game!");
+        console.log(error.message);
+      });
   }
 }

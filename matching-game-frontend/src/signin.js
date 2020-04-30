@@ -63,7 +63,7 @@ class SignInForm {
         return response.json();
       })
       .then(function(object) {
-        return new Game(object.id)
+        return new Game(object.id).startNewGame()
       })
       .catch(function(error) {
         alert("I'm having trouble finding that user!");

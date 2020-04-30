@@ -24,4 +24,11 @@ class Timer {
   render(seconds) {
     return (seconds-(seconds%=60))/60+(9<seconds?':':':0')+seconds
   }
+
+  secondsPast() {
+    let timeSpent = document.getElementById('timer').innerText
+    let minutes = parseInt(timeSpent.split(':')[0])
+    let seconds = parseInt(timeSpent.split(':')[1])
+    return minutes * 60 + seconds
+  }
 }

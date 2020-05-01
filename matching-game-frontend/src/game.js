@@ -47,8 +47,8 @@ class Game {
   loadCards(game_id){
     this.getCards(game_id)
     .then(function(cards){
-      this.shuffleCards(cards)
-      cards.forEach(card => this.addCardToGame(card))
+      let shuffledCards = this.shuffleArray(cards)
+      shuffledCards.forEach(card => this.addCardToGame(card))
     }.bind(this)
     )
   }
@@ -122,8 +122,17 @@ class Game {
     card.matched === 'unmatched');
   }
 
-  shuffleCards(cards) {
-    cards.sort(() => Math.random() - 0.5);
+  shuffleArray(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
   }
 
   isGameWon() {

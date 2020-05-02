@@ -13,7 +13,7 @@ class GamesController < ApplicationController
     game = Game.find(params[:id])
     game.update(game_params)
 
-    render json: GameSerializer.new(Game).to_serialized_json
+    render json: GameSerializer.new(game).to_serialized_json
   end
 
   private

@@ -20,6 +20,7 @@ div.game {
   height: 550px;
   background-color: powderblue;
   padding: 10px;
+  position: relative;
 }
 
 div.card {
@@ -32,6 +33,18 @@ div.card {
   display: flex;
   align-items: center;
   justify-content: center
+}
+
+div.congrats {
+  position: absolute;
+  text-align: center;
+  line-height: 100px;
+  background-color: white;
+  height: 250px;
+  width: 250px;
+  border: 1px solid black;
+  top: 157px;
+  left: 360px;
 }
 
 #timer {

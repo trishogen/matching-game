@@ -150,8 +150,9 @@ class Game {
 
   won() {
     this.completion_time = this.timer.stop();
+    let formattedTime = this.timer.showTime(this.completion_time)
     this.update();
-    // congratulate user in UI
+    new Congratulations().show()
   }
 
   update(){
@@ -173,4 +174,5 @@ class Game {
         console.log(error.message);
       });
   }
+
 }

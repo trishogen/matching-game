@@ -7,8 +7,7 @@ const HEADERS = {
 }
 
 const MAIN = document.getElementsByTagName('main')[0];
-let signInForm = undefined;
 
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function() {
   signInForm = new SignInForm(MAIN);
 })

@@ -39,7 +39,7 @@ class SignInForm {
   playButton(){
     let btn = document.createElement('button');
     btn.type = 'submit';
-    btn.innerText = 'Play!'
+    btn.innerText = 'Play'
     btn.addEventListener('click', (e) => {
       this.signIn(e);
     });

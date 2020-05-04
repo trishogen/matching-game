@@ -1,12 +1,12 @@
 images = [
   {name: "alpaca"},
-  {name: "bear"},
-  {name: "corgi"},
   {name: "fish"},
   {name: "fox"},
+  {name: "frog"},
   {name: "hornet"},
   {name: "platypus"},
-  {name: "red_panda"}
+  {name: "red_panda"},
+  {name: "stingray"}
   ]
 
 images.each do |image|

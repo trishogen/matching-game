@@ -20,9 +20,11 @@ rails db:seed
 ```
 
 #### Start up Server
-
 `rails s`
 
 ### Frontend
 From the root run:
 `open index.html`
+
+## Images
+Icons are from [icons8](https://icons8.com/)

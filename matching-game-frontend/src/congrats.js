@@ -10,7 +10,7 @@ class Congratulations {
 
     let btn = this.playButton()
     let br = document.createElement("br");
-    br.className = 'br-big'
+    br.className = 'br-med'
 
     congrats_div.appendChild(br);
     congrats_div.appendChild(btn);

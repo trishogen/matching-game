@@ -78,13 +78,6 @@ br.br-big {
   content: " ";
 }
 
-
-br.br-med {
-  display: block;
-  margin: 20px 0;
-  content: " ";
-}
-
 input {
   border: 2px solid #1D1A05;
   background: #E6D17E;

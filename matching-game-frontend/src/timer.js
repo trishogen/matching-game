@@ -1,31 +1,34 @@
 class Timer {
 
-  constructor(targetEl){
-    this.targetEl = targetEl
-    this.timerInterval = null;
+  constructor(targetEl) {
+    this.targetEl = targetEl;
+    this.timerInterval = null; // to allow us to easily clearInterval later
   }
 
-  start(){
-    let timer_div = document.createElement('div')
+  start() {
+    let timer_div = document.createElement('div');
     timer_div.id = 'timer';
 
     this.targetEl.append(timer_div);
-    timer_div.innerText = this.showTime(0);
+    // call once before interval is set to show 0:00 quickly
+    timer_div.textContent = this.showTime(0);
 
     let i = 1;
 
     this.timerInterval = setInterval(() => {
-      document.getElementById('timer').innerText = this.showTime(i++)
-    }, 1000)
+      document.getElementById('timer').textContent = this.showTime(i++);
+    }, 1000);
   }
 
   showTime(seconds) {
-    return (seconds-(seconds%=60))/60+(9<seconds?':':':0')+seconds
+    // formats the the display of the timer to hh:ss
+    return (seconds-(seconds%=60))/60+(9<seconds?':':':0')+seconds;
   }
 
   stop() {
-    clearInterval(this.timerInterval)
-    return this.secondsPast()
+    // stops the timer and returns how many seconds have gone by
+    clearInterval(this.timerInterval);
+    return this.secondsPast();
   }
 
   secondsPast() {

@@ -73,19 +73,23 @@ class Game {
 
   addCardToGame(card_obj){
     let card = new Card(card_obj.id, card_obj.image_id,
-      this.checkForMatchesAndWin.bind(this))
-    card.putCardInUI()
-    this.cards.push(card)
+      this.checkForMatchesAndWin.bind(this));
+    card.putCardInUI();
+    this.cards.push(card);
   }
 
   checkForMatchesAndWin(){
     let visibleCards = this.unmatchedCards('visible');
-    let hiddenCards = this.unmatchedCards('hidden')
-    let allUnmatchedCards = visibleCards.concat(hiddenCards)
+    let hiddenCards = this.unmatchedCards('hidden');
+    let allUnmatchedCards = visibleCards.concat(hiddenCards);
 
     allUnmatchedCards.forEach(card => card.disable());
 
-    this.checkForMatches(visibleCards, allUnmatchedCards)
+    let status = this.checkForMatches(visibleCards, allUnmatchedCards);
+
+    if (status == 'notmatched') {
+      return
+    }
 
     if (this.isWon()){
       this.won()
@@ -99,9 +103,10 @@ class Game {
       // check if 2 cards are a match
       if (visibleCards[0].imgId === visibleCards[1].imgId){
         this.matched(visibleCards)
+        return 'matched'
       } else {
         this.notMatched(visibleCards, allUnmatchedCards)
-        return
+        return 'notmatched'
       }
     }
   }

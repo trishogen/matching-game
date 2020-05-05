@@ -1,53 +1,56 @@
 class SignInForm {
 
-  constructor(target) {
-    target.append(this.render());
-
+  constructor(targetEl) {
+    this.targetEl = targetEl; // element to append the signin form to
   }
 
-  render() {
+  show() {
     let div = document.createElement('div');
     div.className = 'sign-in';
 
-    let form = this.form()
-    let input = this.usernameInput();
-
-    let br = document.createElement("br");
-    br.className = 'br-big'
-
-    let btn = this.playButton();
-
-    form.append(input, br, btn);
+    let form = this.form();
     div.append(form);
-    return div
+
+    this.targetEl.append(div);
   }
 
   form() {
     let form = document.createElement('form');
     form.id = 'username-form';
+
+    let input = this.usernameInput();
+    let br = document.createElement("br");
+    br.className = 'br-big'; // create bigger spacing between input and button
+    let btn = this.playButton();
+
+    form.append(input, br, btn);
+
     return form
   }
 
-  usernameInput(){
+  usernameInput() {
     let input = document.createElement('input');
     input.id = 'username-input';
     input.type = 'text';
     input.placeholder = 'username';
+
     return input
   }
 
-  playButton(){
+  playButton() {
     let btn = document.createElement('button');
     btn.type = 'submit';
-    btn.innerText = 'Play'
+    btn.innerText = 'Play';
+
     btn.addEventListener('click', (e) => {
       this.signIn(e);
     });
+
     return btn
   }
 
   signIn(e) {
-    e.preventDefault();
+    e.preventDefault(); // prevent form from submitting
     let username = document.getElementById('username-input').value;
 
     let signInObj = {
@@ -60,10 +63,10 @@ class SignInForm {
 
     return fetch(BASE_URL + '/login', signInObj)
       .then(function(response) {
-        return response.json();
+        return response.json()
       })
-      .then(function(object) {
-        return new Game(object.id).startNewGame()
+      .then(function(user) {
+        return new Game(user.id).startNewGame() // starts new game for user
       })
       .catch(function(error) {
         alert("I'm having trouble finding that user!");

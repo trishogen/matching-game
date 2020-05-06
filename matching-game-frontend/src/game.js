@@ -74,7 +74,7 @@ class Game {
   addCardToGame(card_obj){
     let card = new Card(card_obj.id, card_obj.image_id,
       this.checkForMatchesAndWin.bind(this));
-    card.putCardInUI();
+    card.show();
     this.cards.push(card);
   }
 

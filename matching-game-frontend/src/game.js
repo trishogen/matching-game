@@ -64,8 +64,8 @@ class Game {
     let hiddenCards = this.unmatchedCards('hidden');
     let allUnmatchedCards = visibleCards.concat(hiddenCards);
 
-    let status = this.checkForMatches(visibleCards, allUnmatchedCards);
-    if (status == 'notmatched') {
+    let isSetMatched = this.checkForMatches(visibleCards, allUnmatchedCards);
+    if (isSetMatched === false) {
       return
     }
 
@@ -73,23 +73,23 @@ class Game {
     this.isWon ? this.win() : hiddenCards.forEach(card => card.enable());
   }
 
-  checkForMatches(visibleCards, allUnmatchedCards){
+  checkForMatches(visibleCards, allUnmatchedCards) {
     allUnmatchedCards.forEach(card => card.disable()); // disable while checking
 
     if (visibleCards.length > 1) {
       // check if 2 cards are a match
-      if (visibleCards[0].imgId === visibleCards[1].imgId){
-        this.matched(visibleCards)
-        return 'matched'
+      if (Card.areCardsMatched(visibleCards[0], visibleCards[1])) {
+        this.matched(visibleCards);
+        return true
       } else {
         this.notMatched(visibleCards, allUnmatchedCards)
-        return 'notmatched'
+        return false
       }
     }
   }
 
-  matched(visibleCards){
-    // mark matched if they are, but keep cards disbaled so they can't be flipped
+  matched(visibleCards) {
+    // mark matched if they are, but keep cards disabled so they can't be flipped
     visibleCards.forEach(card => {
       card.matched = 'matched';
       card.update();
@@ -97,15 +97,15 @@ class Game {
   }
 
   notMatched(visibleCards, unmatchedCards) {
-    // if cards are not matched hide them
     setTimeout(() => {
+      // if cards are not matched hide them
       visibleCards.forEach((card) => card.hide());
       // enable all unmatched cards
       unmatchedCards.forEach(card => card.enable());
     }, 500); // wait a half a second so user gets a chance to see the card
   }
 
-  unmatchedCards(visibility){
+  unmatchedCards(visibility) {
     return this.cards.filter(card => card.visibility === visibility &&
     card.matched === 'unmatched');
   }
@@ -137,7 +137,7 @@ class Game {
     new Congratulations().show();
   }
 
-  update(){
+  update() {
     let gameObj = {
       method: "PATCH",
       headers: HEADERS,

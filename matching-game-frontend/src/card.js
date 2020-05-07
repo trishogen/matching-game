@@ -152,4 +152,8 @@ class Card {
           console.log(error.message);
         });
     }
+
+  static areCardsMatched(card1, card2) {
+    card1.imgId === card2.imgId
+  }
 }

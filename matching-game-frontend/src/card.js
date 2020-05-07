@@ -135,4 +135,21 @@ class Card {
       });
   }
 
+  static getCardsInGame(gameId) {
+      let gameCardsObj = {
+        method: "GET",
+        headers: HEADERS,
+      };
+
+      let game_cards_url = `${BASE_URL}/games/${gameId}/cards`;
+
+      return fetch(game_cards_url, gameCardsObj)
+        .then(function(response) {
+          return response.json();
+        })
+        .catch(function(error) {
+          alert("I'm having trouble getting cards for a game!");
+          console.log(error.message);
+        });
+    }
 }

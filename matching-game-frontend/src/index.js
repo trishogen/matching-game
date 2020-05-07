@@ -8,9 +8,6 @@ const HEADERS = {
 
 const MAIN = document.getElementsByTagName('main')[0];
 
-let signInForm = null;
-
 document.addEventListener("DOMContentLoaded", function() {
-  signInForm = new SignInForm(MAIN);
-  signInForm.show();
+  new SignInForm(MAIN).show();
 })

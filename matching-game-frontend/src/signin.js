@@ -66,8 +66,9 @@ class SignInForm {
         return response.json()
       })
       .then(function(user) {
-        return new Game(user.id).startNewGame() // starts new game for user
-      })
+        this.hide();
+        new Game(user.id).start();
+      }.bind(this))
       .catch(function(error) {
         alert("I'm having trouble finding that user!");
         console.log(error.message);

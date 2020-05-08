@@ -89,7 +89,7 @@ class Game {
   }
 
   checkForMatches() {
-    if (this.unmatchedVisibleCards.length <= 1) return false
+    if (this.unmatchedVisibleCards.length <= 1) return
 
     // check if 2 cards are a match
     if (Game.areCardsMatched(this.unmatchedVisibleCards)) {

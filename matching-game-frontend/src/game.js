@@ -1,12 +1,29 @@
 class Game {
 
-  constructor(user_id) {
-    this.user_id = user_id;
+  constructor(userId) {
+    this.userId = userId;
 
     this.id = null;
     this.cards = [];
     this.timer = new Timer(MAIN);
-    this.completion_time = null;
+    this.completionTime = null;
+  }
+
+  get unmatchedCards() {
+    return this.cards.filter(card => card.matched === 'unmatched');
+  }
+
+  get unmatchedVisibleCards() {
+    return this.unmatchedCards.filter(card => card.visibility === 'visible')
+  }
+
+  get unmatchedHiddenCards() {
+    return this.unmatchedCards.filter(card => card.visibility === 'hidden')
+  }
+
+  get isWon() {
+    let unmatchedCards = this.cards.filter(card => card.matched === 'unmatched');
+    return unmatchedCards.length == 0;
   }
 
   start() {
@@ -14,7 +31,7 @@ class Game {
       method: "POST",
       headers: HEADERS,
       body: JSON.stringify({
-        "user_id": this.user_id
+        "user_id": this.userId
       })
     };
     return fetch(BASE_URL + '/games', userObj)
@@ -45,13 +62,13 @@ class Game {
   loadCards() {
     Card.getCardsInGame(this.id) // get all the cards in this game instance
     .then(function(cards){
-      let shuffledCards = this.shuffleArray(cards);
-      shuffledCards.forEach(card => this.addCardToGame(card));
+      let shuffledCards = Game.shuffleCards(cards);
+      shuffledCards.forEach(card => this.renderCardInGame(card));
     }.bind(this)
     )
   }
 
-  addCardToGame(card_obj) {
+  renderCardInGame(card_obj) {
     // instantiates new cards and adds to this game
     let card = new Card(card_obj.id, card_obj.image_id,
       this.checkForMatchesAndWin.bind(this)); // initialize new card
@@ -60,78 +77,42 @@ class Game {
   }
 
   checkForMatchesAndWin() {
-    let visibleCards = this.unmatchedCards('visible');
-    let hiddenCards = this.unmatchedCards('hidden');
-    let allUnmatchedCards = visibleCards.concat(hiddenCards);
+    this.unmatchedCards.forEach(card => card.disable()); // disable while checking
+    if (this.checkForMatches() === false) return
 
-    let isSetMatched = this.checkForMatches(visibleCards, allUnmatchedCards);
-    if (isSetMatched === false) {
-      return
-    }
-
-    // enable only hidden cards if not won
-    this.isWon ? this.win() : hiddenCards.forEach(card => card.enable());
-  }
-
-  checkForMatches(visibleCards, allUnmatchedCards) {
-    allUnmatchedCards.forEach(card => card.disable()); // disable while checking
-
-    if (visibleCards.length > 1) {
-      // check if 2 cards are a match
-      if (Card.areCardsMatched(visibleCards[0], visibleCards[1])) {
-        this.matched(visibleCards);
-        return true
-      } else {
-        this.notMatched(visibleCards, allUnmatchedCards)
-        return false
-      }
+    if (this.isWon){
+      this.win()
+    } else {
+      // enable only hidden cards if not won
+      this.unmatchedHiddenCards.forEach(card => card.enable());
     }
   }
 
-  matched(visibleCards) {
-    // mark matched if they are, but keep cards disabled so they can't be flipped
-    visibleCards.forEach(card => {
-      card.matched = 'matched';
-      card.update();
-    })
+  checkForMatches() {
+    if (this.unmatchedVisibleCards.length <= 1) return false
+
+    // check if 2 cards are a match
+    if (Game.areCardsMatched(this.unmatchedVisibleCards)) {
+      Card.setMatchedCards(this.unmatchedVisibleCards);
+      return true
+    } else {
+      this.handleNotMatched();
+      return false
+    }
   }
 
-  notMatched(visibleCards, unmatchedCards) {
+  handleNotMatched() {
     setTimeout(() => {
       // if cards are not matched hide them
-      visibleCards.forEach((card) => card.hide());
+      this.unmatchedVisibleCards.forEach((card) => card.hide());
       // enable all unmatched cards
-      unmatchedCards.forEach(card => card.enable());
+      this.unmatchedCards.forEach(card => card.enable());
     }, 500); // wait a half a second so user gets a chance to see the card
   }
 
-  unmatchedCards(visibility) {
-    return this.cards.filter(card => card.visibility === visibility &&
-    card.matched === 'unmatched');
-  }
-
-  shuffleArray(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-  }
-
-  get isWon() {
-    let unmatchedCards = this.cards.filter(card => card.matched === 'unmatched');
-    return unmatchedCards.length == 0;
-  }
-
   win() {
-    this.completion_time = this.timer.stop();
-    let formattedTime = this.timer.showTime(this.completion_time);
+    this.completionTime = this.timer.stop();
+    let formattedTime = this.timer.showTime(this.completionTime);
     this.update();
 
     new Congratulations().show();
@@ -142,7 +123,7 @@ class Game {
       method: "PATCH",
       headers: HEADERS,
       body: JSON.stringify({
-        completion_time: this.completion_time
+        completion_time: this.completionTime
       })
     };
     let gameUrl = `${BASE_URL}/games/${this.id}`
@@ -155,6 +136,25 @@ class Game {
         alert("I'm having trouble updating this game!");
         console.log(error.message);
       });
+  }
+
+  static shuffleCards(cardsArray) {
+    let currentIndex = cardsArray.length, temporaryValue, randomIndex;
+
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = cardsArray[currentIndex];
+      cardsArray[currentIndex] = cardsArray[randomIndex];
+      cardsArray[randomIndex] = temporaryValue;
+    }
+
+    return cardsArray;
+  }
+
+  static areCardsMatched(cards) {
+    if (cards.length != 2) return False
+    return cards[0].imgId === cards[1].imgId
   }
 
 }

@@ -36,8 +36,6 @@ class Card {
   }
 
   get cardDiv() {
-    // Is it best practice to have the 'get' here even though I'm not avoiding
-    // accessing a private field?
     return document.querySelector(`[card-id="${this.id}"]`);
   }
 
@@ -153,7 +151,11 @@ class Card {
         });
     }
 
-  static areCardsMatched(card1, card2) {
-    card1.imgId === card2.imgId
-  }
+    static setMatchedCards(cardsArray) {
+      // set multiple cards to matched
+      cardsArray.forEach(card => {
+        card.matched = 'matched';
+        card.update();
+      })
+    }
 }

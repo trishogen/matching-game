@@ -65,10 +65,10 @@ class SignInForm {
       .then(function(response) {
         return response.json()
       })
-      .then(function(user) {
+      .then(user => {
         this.hide();
         new Game(user.id).start();
-      }.bind(this))
+      })
       .catch(function(error) {
         alert("I'm having trouble finding that user!");
         console.log(error.message);

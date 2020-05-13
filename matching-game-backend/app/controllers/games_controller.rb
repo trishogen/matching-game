@@ -1,12 +1,18 @@
 class GamesController < ApplicationController
 
+  def index
+    games = Game.all
+
+    render json: GameSerializer.new(games).to_serialized_json
+  end
+
   def create
     user = User.find(params[:user_id])
     game = user.games.new
     game.save
     game.add_cards_to_game()
 
-    render json: GameSerializer.new(game).to_serialized_json
+    render json: GameCardSerializer.new(game).to_serialized_json
   end
 
   def update

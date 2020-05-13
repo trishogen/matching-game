@@ -1,12 +1,12 @@
 class Game {
 
-  constructor(userId) {
+  constructor(userId, id = null, completionTime = null) {
     this.userId = userId;
 
-    this.id = null;
+    this.id = id;
     this.cards = [];
     this.timer = new Timer(MAIN);
-    this.completionTime = null;
+    this.completionTime = completionTime;
   }
 
   get unmatchedCards() {
@@ -40,7 +40,7 @@ class Game {
       })
       .then(function(game) {
         this.id = game.id;
-        this.show();
+        this.show(game.cards);
       }.bind(this))
       .catch(function(error) {
         alert("I'm having trouble starting a new game!");
@@ -48,7 +48,7 @@ class Game {
       });
   }
 
-  show() {
+  show(cards) {
     this.timer.start();
 
     let div = document.createElement('div');
@@ -56,16 +56,8 @@ class Game {
     div.id = 'game';
     MAIN.append(div);
 
-    this.loadCards()
-  }
-
-  loadCards() {
-    Card.getCardsInGame(this.id) // get all the cards in this game instance
-    .then(function(cards){
-      let shuffledCards = Game.shuffleCards(cards);
-      shuffledCards.forEach(card => this.renderCardInGame(card));
-    }.bind(this)
-    )
+    let shuffledCards = Game.shuffleCards(cards);
+    shuffledCards.forEach(card => this.renderCardInGame(card));
   }
 
   renderCardInGame(card_obj) {
@@ -155,6 +147,49 @@ class Game {
   static areCardsMatched(cards) {
     if (cards.length != 2) return False
     return cards[0].imgId === cards[1].imgId
+  }
+
+  static async topTenGames() {
+    let games = await Game.allGames();
+
+    // only look at completed games
+    let filteredGames = games.filter(game => game.completionTime);
+    // sort by which was completed in shortest amount of time
+    filteredGames.sort((game1, game2) =>  {
+      return game1.completionTime - game2.completionTime
+    })
+
+    return filteredGames.slice(0,10);
+  }
+
+
+  static allGames() {
+    let gameObj = {
+      method: "GET",
+      headers: HEADERS
+    };
+    return fetch(BASE_URL + '/games', gameObj)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(games => {
+        return Game.createManyGames(games);
+      })
+      .catch(function(error) {
+        alert("I'm having trouble getting all games!");
+        console.log(error.message);
+      });
+  }
+
+  static createManyGames(games) {
+    let gamesArray = [];
+
+    games.forEach(game => {
+      let gameObj = new Game(game.user_id, game.id, game.completion_time);
+      gamesArray.push(gameObj);
+    });
+
+    return gamesArray
   }
 
 }

@@ -13,6 +13,18 @@ class Congratulations {
     gameDiv.append(congrats_div);
   }
 
+  topTenGames(games, p) {
+    let ul = document.createElement('ul');
+
+    games.forEach(game => {
+      let li = document.createElement('li');
+      li.innerText = `${game.completionTime}`
+      ul.append(li)
+    })
+
+    return ul
+  }
+
   congratsMessage() {
     let p = document.createElement('p');
     p.textContent = `Congratulations, you won!`;

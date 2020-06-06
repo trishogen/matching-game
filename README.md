@@ -1,5 +1,6 @@
 # matching-game
-  A simple card matching memory game. This is a  Javascript single page application, with a Ruby on Rails backend.
+  A simple card matching memory game. This is a vanilla Javascript single page application, with a Ruby on Rails backend. A demo of this app can be found [here](https://www.youtube.com/watch?v=hiawumrc_nY&t=1s).
+  
 
 ## Running Locally
 

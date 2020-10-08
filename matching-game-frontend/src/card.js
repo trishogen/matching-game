@@ -100,6 +100,7 @@ class Card {
   }
 
   onClick() {
+    // show the card
     this.visibility = VISIBILITY[this.visibility];
     this.disable();
     this.update();

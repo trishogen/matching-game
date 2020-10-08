@@ -34,6 +34,7 @@ class Game {
         "user_id": this.userId
       })
     };
+
     return fetch(BASE_URL + '/games', userObj)
       .then(function(response) {
         return response.json();
@@ -49,7 +50,7 @@ class Game {
   }
 
   show(cards) {
-    this.timer.start();
+    this.timer.start(); // start the game's timer
 
     let div = document.createElement('div');
     div.className = 'game';
@@ -150,6 +151,7 @@ class Game {
   }
 
   static async topTenGames() {
+    // gets games with the fastest completion time
     let games = await Game.allGames();
 
     // only look at completed games
@@ -168,6 +170,7 @@ class Game {
       method: "GET",
       headers: HEADERS
     };
+
     return fetch(BASE_URL + '/games', gameObj)
       .then(function(response) {
         return response.json();

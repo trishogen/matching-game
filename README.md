@@ -1,6 +1,5 @@
 # matching-game
   A simple card matching memory game. This is a vanilla Javascript single page application, with a Ruby on Rails backend. A demo of this app can be found [here](https://www.youtube.com/watch?v=hiawumrc_nY&t=1s).
-  
 
 ## Running Locally
 
@@ -29,3 +28,13 @@ From the root run:
 
 ## Images
 Icons are from [icons8](https://icons8.com/)
+
+## Future Improvements:
+* Build out test suite
+* Users can select a difficult level on games, which adjusts the number of cards
+they receive in a game
+* Users can select different game categories corresponding to images shown i.e. animal icons vs. plant icons etc.
+* App pulls card images from an API (or look at storage solutions)
+* User authentication
+* Transition to one startup command via rake for both the front and back end
+* Move over React on the front-end when things get more complex

@@ -1,5 +1,6 @@
 class Congratulations {
-
+  // Congratulations pop up when game is is won
+  
   show() {
     let gameDiv = document.getElementsByClassName('game')[0];
 

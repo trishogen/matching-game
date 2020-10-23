@@ -51,6 +51,8 @@ bower.json
 
 # Ignore node_modules
 node_modules/
+# Ignore test results
+matching-game-frontend/.results.json
 
 # Ignore precompiled javascript packs
 /public/packs
